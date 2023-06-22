@@ -28,9 +28,15 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss",
+              "src/assets/css/nucleo-icons.css",
+              "src/assets/scss/blk-design-system.scss",
+              "src/assets/demo/demo.css"
             ],
-            "scripts": []
+            "scripts": [
+            	"node_modules/firebase/firebase-app.js",
+				"node_modules/firebase/firebase-database.js"
+            ]
           },
           "configurations": {
             "production": {
