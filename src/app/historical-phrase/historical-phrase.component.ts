@@ -12,13 +12,16 @@ import { DatabaseService } from '../_services/database.service';
 export class HistoricalPhraseComponent implements OnInit {
 	isCollapsed = true;
 	phrases: any = [];
-	randomPhrase: string = '';
+	quote: string = '';
+	author: string = '';
+	datePublication: string = '';
 	todayDate;
 	numberFromDate;
 	focus: any;
 	focus1: any;
-  	focus2: any;
+	focus2: any;
 	data: any;
+	currentIndex: number = 0;
 
 	constructor(private http: HttpClient,
 		private dateService: DateService,
@@ -30,30 +33,42 @@ export class HistoricalPhraseComponent implements OnInit {
 	ngOnInit() {
 		this.loadHistoricalPhrases();
 		var body = document.getElementsByTagName("body")[0];
-	    body.classList.add("index-page");
+		body.classList.add("index-page");
 	}
-	
-	
+
+
 
 	scrollToDownload(element: any) {
 		element.scrollIntoView({ behavior: "smooth" });
 	}
 
 	loadHistoricalPhrases() {
-		this.databaseService.getLastNPhrases(3).subscribe(data => {
-      		this.phrases = data;
+		this.databaseService.getLastNPhrases(5).subscribe(data => {
+			this.phrases = data;
 			this.selectDailyPhrase();
-    	});
+		});
 	}
-	
-	testUpdate(){
+
+	testUpdate() {
 		var dateToUpdate = this.phrases[0];
 		dateToUpdate.datePublication = "20230622";
 		this.databaseService.update(0, dateToUpdate);
 	}
 
 	selectDailyPhrase() {
-		this.randomPhrase = this.phrases[1].quote;
+		this.quote = this.phrases[this.currentIndex].quote;
+		this.author = this.phrases[this.currentIndex].author;
+		this.datePublication = this.phrases[this.currentIndex].datePublication;
+	}
+
+	previousIndex() {
+		this.currentIndex = (this.currentIndex > 0) ? this.currentIndex-1 : 0;
+		this.selectDailyPhrase();
+	}
+
+	nextIndex() {
+		this.currentIndex = (this.currentIndex < this.phrases.length) ? this.currentIndex+1 : this.phrases.length;
+		this.selectDailyPhrase();
 	}
 
 	/*writeRandomValueToFile(randomIndex: number) {

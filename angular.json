@@ -30,8 +30,10 @@
             "styles": [
               "src/styles.scss",
               "src/assets/css/nucleo-icons.css",
+              "src/assets/css/custom.css",
               "src/assets/scss/blk-design-system.scss",
-              "src/assets/demo/demo.css"
+              "src/assets/demo/demo.css",
+              "node_modules/font-awesome/css/font-awesome.css"
             ],
             "scripts": [
             	"node_modules/firebase/firebase-app.js",
@@ -56,8 +58,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "4mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",

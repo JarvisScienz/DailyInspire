@@ -12,12 +12,13 @@ import { DatabaseService } from '../_services/database.service';
 export class DailyPhraseComponent implements OnInit {
 	isCollapsed = true;
 	phrases: any = [];
-	randomPhrase: string = '';
+	quote: string = '';
+	author: string = '';
 	todayDate;
 	numberFromDate;
 	focus: any;
 	focus1: any;
-  	focus2: any;
+	focus2: any;
 	data: any;
 
 	constructor(private http: HttpClient,
@@ -28,34 +29,52 @@ export class DailyPhraseComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.loadPhrases(this.numberFromDate);
+		this.loadPhrases();
 		var body = document.getElementsByTagName("body")[0];
-	    body.classList.add("index-page");
-		
+		body.classList.add("index-page");
+
 	}
-	
-	
+
+	ngOnDestroy() {
+		var body = document.getElementsByTagName("body")[0];
+		body.classList.remove("index-page");
+	}
+
+	setCollapsed() {
+		this.isCollapsed = !this.isCollapsed;
+	}
 
 	scrollToDownload(element: any) {
 		element.scrollIntoView({ behavior: "smooth" });
 	}
 
-	loadPhrases(numberFromDate: number) {
-		this.databaseService.getAllData().subscribe(data => {
-      		this.phrases = data;
-				this.selectDailyPhrase(numberFromDate);
-    	});
+	loadPhrases() {
+		this.databaseService.getPhrasesPublicatedInDay(this.dateService.getCurrentDateNotParsed()).subscribe(data => {
+			if (data.length != 0){
+				this.quote = data[0].quote;
+				this.author = data[0].author;	
+			}else{
+				this.databaseService.getAllPhrasesNotPublicated().subscribe(data => {
+					this.phrases = data;
+					this.selectDailyPhrase(this.numberFromDate);
+				});	
+			}
+				
+		});
+		
 	}
-	
-	testUpdate(){
+
+	updateDateProduction() {
 		var dateToUpdate = this.phrases[0];
-		dateToUpdate.datePublication = "20230622";
+		dateToUpdate.datePublication = this.dateService.getCurrentDateNotParsed();
 		this.databaseService.update(0, dateToUpdate);
 	}
 
 	selectDailyPhrase(numberFromDate: number) {
 		const randomIndex = numberFromDate % this.phrases.length;
-		this.randomPhrase = this.phrases[randomIndex].quote;
+		this.quote = this.phrases[randomIndex].quote;
+		this.author = this.phrases[randomIndex].author;
+		this.updateDateProduction();
 	}
 
 	/*writeRandomValueToFile(randomIndex: number) {

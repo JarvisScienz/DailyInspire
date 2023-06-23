@@ -16,6 +16,21 @@ export class DatabaseService {
 		return dataRef.valueChanges();
 	}
 
+	getAllPhrasesNotPublicated(): Observable<any> {
+		const listRef = this.db.list(this.databasePath, (ref) =>
+      		ref.orderByChild('datePublication').equalTo(null)
+		);
+
+    	return listRef.valueChanges();
+	}
+	
+	getPhrasesPublicatedInDay(day: string): Observable<any>{
+		const listRef = this.db.list(this.databasePath, (ref) =>
+      		ref.orderByChild('datePublication').equalTo(day)
+		);
+
+    	return listRef.valueChanges();		
+	}
 	/*create(tutorial: Tutorial): any {
 		return this.tutorialsRef.push(tutorial);
 	}*/
@@ -27,7 +42,7 @@ export class DatabaseService {
 	
 	getLastNPhrases(index: number){
 		const listRef = this.db.list(this.databasePath, (ref) =>
-      		ref.orderByChild('datePublication').limitToLast(index)
+      		ref.orderByChild('datePublication').limitToFirst(index)
 		);
 
     	return listRef.valueChanges();

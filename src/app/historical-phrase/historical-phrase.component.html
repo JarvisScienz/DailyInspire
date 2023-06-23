@@ -15,7 +15,7 @@
 					class="navbar-toggler-bar bar3"> </span>
 			</button>
 		</div>
-		<div class="navbar-collapse justify-content-end" id="navigation">
+		<div class="navbar-collapse justify-content-end" [collapse]="isCollapsed" id="navigation">
 			<div class="navbar-collapse-header">
 				<div class="row">
 					<div class="col-6 collapse-brand">
@@ -36,19 +36,19 @@
 				<li class="nav-item p-0"><a class="nav-link"
 					href="https://twitter.com/CreativeTim" placement="bottom"
 					target="_blank" tooltip="Follow us on Twitter"> <i
-						class="fab fa-twitter"> </i>
+						class="fa fa-twitter"> </i>
 						<p class="d-lg-none d-xl-none">Twitter</p>
 				</a></li>
 				<li class="nav-item p-0"><a class="nav-link"
 					href="https://www.facebook.com/CreativeTim" placement="bottom"
 					target="_blank" tooltip="Like us on Facebook"> <i
-						class="fab fa-facebook-square"> </i>
+						class="fa fa-facebook-square"> </i>
 						<p class="d-lg-none d-xl-none">Facebook</p>
 				</a></li>
 				<li class="nav-item p-0"><a class="nav-link"
 					href="https://www.instagram.com/CreativeTimOfficial"
 					placement="bottom" target="_blank" tooltip="Follow us on Instagram">
-						<i class="fab fa-instagram"> </i>
+						<i class="fa fa-instagram"> </i>
 						<p class="d-lg-none d-xl-none">Instagram</p>
 				</a></li>
 				<li class="dropdown nav-item" dropdown><a
@@ -64,16 +64,6 @@
 						</a>
 					</div>
 				</li>
-				
-				<!--         <li class="nav-item"> -->
-				<!--           <a -->
-				<!--             class="nav-link btn btn-default d-none d-lg-block" -->
-				<!--             href="javascript:void(0)" -->
-				<!--             (click)="testUpdate()" -->
-				<!--           > -->
-				<!--             <i class="tim-icons icon-cloud-download-93"> </i> Download -->
-				<!--           </a> -->
-				<!--         </li> -->
 			</ul>
 		</div>
 	</div>
@@ -89,9 +79,16 @@
 		<div class="squares square7"></div>
 		<div class="container">
 			<div class="content-center brand">
-				<!--         <h1 class="h1-seo">DailyInspire•</h1> -->
-				<h3>{{randomPhrase}}</h3>
+				<h3>{{datePublication}}</h3>
+				<h3>{{quote}}</h3>
 			</div>
+			<div class="content-right brand">				
+				<h3>{{author}}</h3>
+			</div>
+			<div class="navigation-arrows">
+				<a class="arrow" (click)="previousIndex()"><i class="fa fa-arrow-left"></i></a>
+		        <a class="arrow" (click)="nextIndex()"><i class="fa fa-arrow-right"></i></a>
+	      	</div>
 		</div>
 	</div>
 </div>
