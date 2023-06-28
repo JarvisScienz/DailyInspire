@@ -40,10 +40,6 @@ export class DailyPhraseComponent implements OnInit {
 		body.classList.remove("index-page");
 	}
 
-	setCollapsed() {
-		this.isCollapsed = !this.isCollapsed;
-	}
-
 	scrollToDownload(element: any) {
 		element.scrollIntoView({ behavior: "smooth" });
 	}
