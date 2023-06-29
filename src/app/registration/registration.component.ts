@@ -3,6 +3,8 @@ import { Router} from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule  } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/auth';
 
+import { DatabaseService } from '../_services/database.service'
+
 @Component({
 	selector: 'app-registration',
 	templateUrl: './registration.component.html',
@@ -19,7 +21,8 @@ export class RegistrationComponent implements OnInit{
 	focus2 = false;
 
 	constructor(private afAuth: AngularFireAuth,
-		private formBuilder: FormBuilder, private router: Router) { }
+		private formBuilder: FormBuilder, private router: Router,
+		private databaseService: DatabaseService) { }
 
 	@HostListener("document:mousemove", ["$event"])
 	onMouseMove(e: any) {
@@ -108,6 +111,7 @@ export class RegistrationComponent implements OnInit{
 		this.afAuth.createUserWithEmailAndPassword(this.f.email.value, this.f.password.value)
 			.then(response => {
 				console.log('User created successfully!', response);
+				this.databaseService.assignUserRole(response.user!.uid, "user");
 				this.router.navigate(["/profile"]);
 			})
 			.catch(error => {

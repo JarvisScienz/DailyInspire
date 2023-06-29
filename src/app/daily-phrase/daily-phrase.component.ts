@@ -60,28 +60,16 @@ export class DailyPhraseComponent implements OnInit {
 		
 	}
 
-	updateDateProduction() {
-		var dateToUpdate = this.phrases[0];
+	updateDateProduction(randomIndex: number) {
+		var dateToUpdate = this.phrases[randomIndex];
 		dateToUpdate.datePublication = this.dateService.getCurrentDateNotParsed();
-		this.databaseService.update(0, dateToUpdate);
+		this.databaseService.update(randomIndex, dateToUpdate);
 	}
 
 	selectDailyPhrase(numberFromDate: number) {
 		const randomIndex = numberFromDate % this.phrases.length;
 		this.quote = this.phrases[randomIndex].quote;
 		this.author = this.phrases[randomIndex].author;
-		this.updateDateProduction();
+		//this.updateDateProduction(randomIndex);
 	}
-
-	/*writeRandomValueToFile(randomIndex: number) {
-		const filePath = 'assets/historical-phrases.txt';
-
-		fs.writeFile(filePath, randomIndex.toString(), (err) => {
-			if (err) {
-				console.error('Si è verificato un errore durante la scrittura del file:', err);
-			} else {
-				console.log('Valore casuale scritto correttamente nel file:', filePath);
-			}
-		});
-	}*/
 }

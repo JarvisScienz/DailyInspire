@@ -8,16 +8,12 @@
 		<div class="squares square6"></div>
 		<div class="squares square7"></div>
 		<div class="container">
-			<div class="content-center brand">
-				<h3>{{datePublication}}</h3>
-				<h3>{{quote}}</h3>
-			</div>
-			<div class="content-right brand">				
-				<h3>{{author}}</h3>
+			<div class="content-center brand" style="overflow-y: auto; width: 100%">
+				<blockquote><p style="color: white" class="blockquote blockquote-danger">{{datePublication}}<br><br>{{quote}}<br><br><small style="color: white"> - {{author}} </small></p></blockquote>
 			</div>
 			<div class="navigation-arrows">
-				<a class="arrow" (click)="previousIndex()"><i class="fa fa-arrow-left"></i></a>
-		        <a class="arrow" (click)="nextIndex()"><i class="fa fa-arrow-right"></i></a>
+				<a class="arrow" style="z-index: 2" (click)="previousIndex()" [class.disabled]="disabledPrevButton ? true: null"><i class="fa fa-arrow-left"></i></a>
+		        <a class="arrow" style="z-index: 2" (click)="nextIndex()" [class.disabled]="disabledNextButton ? true: null"><i class="fa fa-arrow-right"></i></a>
 	      	</div>
 		</div>
 	</div>

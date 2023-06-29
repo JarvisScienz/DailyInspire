@@ -5,6 +5,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 
 import { AuthService } from '../_services/auth.service'
 import { CookiesService } from '../_services/cookies.service'
+import { DatabaseService } from '../_services/database.service'
 
 @Component({
 	selector: 'app-login',
@@ -22,7 +23,7 @@ export class LoginComponent {
 	focus2 = false;
 
 	constructor(private afAuth: AngularFireAuth, private formBuilder: FormBuilder, private authService: AuthService,
-	private router: Router, private cookiesservice:CookiesService) { }
+	private router: Router, private cookiesservice:CookiesService, private databaseService: DatabaseService) { }
 
 	@HostListener("document:mousemove", ["$event"])
 	onMouseMove(e: any) {
@@ -121,10 +122,12 @@ export class LoginComponent {
 			.then(response => {
 				this.loading = false;
 				console.log('User logged in successfully!', response);
+				this.databaseService.checkUserRole();
 				//this.authService.setUserData(response.user!.uid, this.f.email.value);
 				this.cookiesservice.setCookie("userID", response.user!.uid, 2);
 				this.cookiesservice.setCookie("userEmail", this.f.email.value, 2);
 				this.router.navigate(["/profile"]);
+				this.authService.setUserData(response.user!.uid, this.f.email.value);
 				// Puoi eseguire altre operazioni dopo il login dell'utente
 			})
 			.catch(error => {

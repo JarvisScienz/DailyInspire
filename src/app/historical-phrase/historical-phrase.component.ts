@@ -22,6 +22,8 @@ export class HistoricalPhraseComponent implements OnInit {
 	focus2: any;
 	data: any;
 	currentIndex: number = 0;
+	disabledPrevButton: boolean = true;
+	disabledNextButton: boolean = false;
 
 	constructor(private http: HttpClient,
 		private dateService: DateService,
@@ -58,16 +60,20 @@ export class HistoricalPhraseComponent implements OnInit {
 	selectDailyPhrase() {
 		this.quote = this.phrases[this.currentIndex].quote;
 		this.author = this.phrases[this.currentIndex].author;
-		this.datePublication = this.phrases[this.currentIndex].datePublication;
+		this.datePublication = this.dateService.parseDateToItalianFormat(this.phrases[this.currentIndex].datePublication); 
 	}
 
 	previousIndex() {
 		this.currentIndex = (this.currentIndex > 0) ? this.currentIndex-1 : 0;
+		this.disabledPrevButton = (this.currentIndex == 0) ? true : false;
+		this.disabledNextButton = false;
 		this.selectDailyPhrase();
 	}
 
 	nextIndex() {
-		this.currentIndex = (this.currentIndex < this.phrases.length) ? this.currentIndex+1 : this.phrases.length;
+		this.currentIndex = (this.currentIndex < this.phrases.length) ? this.currentIndex+1 : this.phrases.length-1;
+		this.disabledPrevButton = false;
+		this.disabledNextButton = (this.currentIndex == this.phrases.length-1) ? true : false;
 		this.selectDailyPhrase();
 	}
 

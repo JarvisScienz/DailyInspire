@@ -9,6 +9,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { ProfileComponent } from './profile/profile.component';
 
 import { AuthGuard } from './_helpers/auth.guard';
+import { LoginGuard } from './_helpers/login.guard';
 
 const routes: Routes = [
 	{ path: '', redirectTo: '/daily-phrase', pathMatch: 'full' },
@@ -16,8 +17,8 @@ const routes: Routes = [
 	{ path: "daily-phrase", component: DailyPhraseComponent },
 	{ path: "historical", component: HistoricalPhraseComponent },
 	{ path: "profile", component: ProfileComponent, canActivate: [AuthGuard] },
-	{ path: "login", component: LoginComponent },
-	{ path: "registration", component: RegistrationComponent }
+	{ path: "login", component: LoginComponent, canActivate: [LoginGuard]},
+	{ path: "registration", component: RegistrationComponent, canActivate: [LoginGuard] }
 ];
 
 @NgModule({

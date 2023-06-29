@@ -10,7 +10,7 @@
           h3 {
             color: $white;
             font-weight: 600;
-            text-transform: capitalize;
+            /*text-transform: capitalize;*/
             span {
               font-weight: $font-weight-bold;
             }
@@ -293,7 +293,7 @@
     min-height: 550px;
 
     .container {
-      padding-top: 30vh;
+      padding-top: 20vh;
     }
 
     .path {

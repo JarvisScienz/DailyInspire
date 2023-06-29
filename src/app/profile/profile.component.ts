@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DateService } from '../_services/date.service';
@@ -34,6 +34,7 @@ export class ProfileComponent implements OnInit {
 	userLoggedId!: string;
 	emailUserLogged: string;
 	phrase?: PhraseClass;
+	adminIsLogged?: any;
 
 	constructor(private http: HttpClient,
 		private dateService: DateService,
@@ -46,33 +47,47 @@ export class ProfileComponent implements OnInit {
 		this.numberFromDate = dateService.getNumberDayOfTheYear();
 		this.userLoggedId = this.cookiesService.getCookie("userID");
 		this.emailUserLogged = this.cookiesService.getCookie("userEmail");
+		//console.log("Admin is logged: " + adminIsLogged);
 	}
 
 	ngOnInit() {
+		
 		var body = document.getElementsByTagName("body")[0];
 		body.classList.add("profile-page");
-		
+
 		this.addPhraseForm = this.formBuilder.group({
 			quote: ['', Validators.required],
 			author: ['', Validators.required]
 		});
+
 		
-		this.loadHistoricalPhrases();
+		this.isAdminLogged();
 	}
+	
 	ngOnDestroy() {
 		var body = document.getElementsByTagName("body")[0];
 		body.classList.remove("profile-page");
 	}
-	
-	async sendPhrase(){
+
+	async sendPhrase() {
 		this.phrase = new PhraseClass(this.quote, this.author, '', this.userLoggedId, false);
 		var result = await this.databaseService.addPhrase(this.phrase);
-		if (result){
+		if (result) {
 			this.resetForm();
 			this.openModalConfirm("Frase aggiunta", "Frase aggiunta");
 		}
-		else{
+		else {
 			this.openModalConfirm("Frase non aggiunta", "Frase non aggiunta");
+		}
+	}
+	
+	async isAdminLogged (){
+		this.adminIsLogged = await this.databaseService.isAdminLogged(this.userLoggedId);
+		
+		if(this.adminIsLogged){
+			this.loadPhrasesToApprove();
+		}else{
+			this.loadHistoricalPhrases();	
 		}
 	}
 
@@ -81,27 +96,36 @@ export class ProfileComponent implements OnInit {
 			this.phrases = data;
 		});
 	}
-	
+
+	loadPhrasesToApprove() {
+		this.databaseService.getPhrasesToApproved().subscribe(data => {
+			this.phrases = data;
+		});
+	}
+
 	openModalConfirm(title: string, content: string) {
 		const modalRef = this.modalService.open(ModalConfirmComponent);
 		modalRef.componentInstance.my_modal_title = title;
 		modalRef.componentInstance.my_modal_content = content;
 	}
-	
-	resetForm(){
+
+	resetForm() {
 		this.quote = "";
 		this.author = "";
 	}
 
-	/*writeRandomValueToFile(randomIndex: number) {
-		const filePath = 'assets/historical-phrases.txt';
+	getLabelApproved(value: boolean) {
+		var label = (value) ? "Approvata" : "Non approvata";
+		return label;
+	}
 
-		fs.writeFile(filePath, randomIndex.toString(), (err) => {
-			if (err) {
-				console.error('Si è verificato un errore durante la scrittura del file:', err);
-			} else {
-				console.log('Valore casuale scritto correttamente nel file:', filePath);
-			}
-		});
-	}*/
+	getClassApproved(value: boolean) {
+		var classValue = (value) ? "btn btn-success btn-simple btn-round" : "btn btn-primary btn-simple btn-round";
+		return classValue;
+	}
+	
+	approvePhrase(phrase: any){
+		phrase.approved = true;
+		this.databaseService.update(phrase.id, phrase);
+	}
 }

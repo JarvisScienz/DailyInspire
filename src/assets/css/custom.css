@@ -36,3 +36,10 @@
 .arrow:hover {
 	color: #aaaaaa;
 }
+
+a.disabled {
+    color: gray !important;
+    pointer-events: none;
+    cursor: not-allowed;
+    text-decoration: underline;
+}
