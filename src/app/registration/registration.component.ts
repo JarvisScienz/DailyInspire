@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router} from '@angular/router';
-import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule  } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormControl, ReactiveFormsModule  } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/auth';
 
 import { DatabaseService } from '../_services/database.service'
@@ -11,7 +11,7 @@ import { DatabaseService } from '../_services/database.service'
 	styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent implements OnInit{
-	registrationForm!: FormGroup;
+	registrationForm!: UntypedFormGroup;
 	email: string = "";
 	password: string = "";
 	submitted = false;
@@ -21,7 +21,7 @@ export class RegistrationComponent implements OnInit{
 	focus2 = false;
 
 	constructor(private afAuth: AngularFireAuth,
-		private formBuilder: FormBuilder, private router: Router,
+		private formBuilder: UntypedFormBuilder, private router: Router,
 		private databaseService: DatabaseService) { }
 
 	@HostListener("document:mousemove", ["$event"])

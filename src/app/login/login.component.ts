@@ -1,6 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { Router} from '@angular/router';
-import { FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/auth';
 
 import { AuthService } from '../_services/auth.service'
@@ -13,7 +13,7 @@ import { DatabaseService } from '../_services/database.service'
 	styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-	loginForm!: FormGroup;
+	loginForm!: UntypedFormGroup;
 	loading = false;
 	submitted = false;
 	returnUrl!: string;
@@ -22,7 +22,7 @@ export class LoginComponent {
 	focus1 = false;
 	focus2 = false;
 
-	constructor(private afAuth: AngularFireAuth, private formBuilder: FormBuilder, private authService: AuthService,
+	constructor(private afAuth: AngularFireAuth, private formBuilder: UntypedFormBuilder, private authService: AuthService,
 	private router: Router, private cookiesservice:CookiesService, private databaseService: DatabaseService) { }
 
 	@HostListener("document:mousemove", ["$event"])

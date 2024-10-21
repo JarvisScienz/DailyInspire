@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DateService } from '../_services/date.service';
@@ -18,7 +18,7 @@ import { ModalConfirmComponent } from './../modal/confirm/modal-confirm.componen
 	styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-	addPhraseForm!: FormGroup;
+	addPhraseForm!: UntypedFormGroup;
 	isCollapsed = true;
 	phrases: any = [];
 	quote: string = '';
@@ -41,7 +41,7 @@ export class ProfileComponent implements OnInit {
 		private databaseService: DatabaseService,
 		private authService: AuthService,
 		private cookiesService: CookiesService,
-		private formBuilder: FormBuilder,
+		private formBuilder: UntypedFormBuilder,
 		private modalService: NgbModal) {
 		this.todayDate = dateService.getCurrentDate();
 		this.numberFromDate = dateService.getNumberDayOfTheYear();
