@@ -37,10 +37,7 @@
               "src/assets/demo/demo.css",
               "node_modules/font-awesome/css/font-awesome.css"
             ],
-            "scripts": [
-            	"node_modules/firebase/firebase-app.js",
-				"node_modules/firebase/firebase-database.js"
-            ],
+            "scripts": [],
             "extractLicenses": false,
             "sourceMap": true,
             "optimization": false,

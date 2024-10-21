@@ -3,7 +3,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
+    "outDir": "./dist",
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "strict": true,
@@ -22,6 +22,8 @@
     ],
     "useDefineForClassFields": false
   },
+  "include": ["src/**/*.ts", "src/**/*.js"],
+  "exclude": ["node_modules", "dist"],
   "angularCompilerOptions": {
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
