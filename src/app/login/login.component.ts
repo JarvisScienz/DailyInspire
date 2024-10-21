@@ -122,7 +122,6 @@ export class LoginComponent {
 			.then(response => {
 				this.loading = false;
 				console.log('User logged in successfully!', response);
-				this.databaseService.checkUserRole();
 				//this.authService.setUserData(response.user!.uid, this.f.email.value);
 				this.cookiesservice.setCookie("userID", response.user!.uid, 2);
 				this.cookiesservice.setCookie("userEmail", this.f.email.value, 2);
