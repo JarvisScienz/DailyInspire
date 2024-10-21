@@ -79,18 +79,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "daily-inspire:build"
+            "buildTarget": "daily-inspire:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "daily-inspire:build:production"
+              "buildTarget": "daily-inspire:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "daily-inspire:build"
+            "buildTarget": "daily-inspire:build"
           }
         },
         "test": {

@@ -28,7 +28,7 @@
 											(blur)="focus = false" />
 									</div>
 									<div *ngIf="registrationForm.get('email')?.hasError('required') && registrationForm.get('email')?.touched" class="text-danger">
-									    	<span>L'email è obbligatoria</span>
+									    	<span>L'email obbligatoria</span>
 								    </div>
 								    <div *ngIf="registrationForm.get('email')?.hasError('pattern') && registrationForm.get('email')?.touched" class="text-danger">
 								    	<span>Formato email non valido.</span>
@@ -45,7 +45,7 @@
 											(focus)="focus2 = true" (blur)="focus2 = false" />
 									</div>
 									<div *ngIf="registrationForm.get('password')?.hasError('required') && registrationForm.get('password')?.touched" class="text-danger">
-									    	<span>La password è obbligatoria</span>
+									    	<span>La password obbligatoria</span>
 								    </div>
 								    <div *ngIf="registrationForm.get('password')?.hasError('minlength') && registrationForm.get('password')?.touched" class="text-danger">
 								    	<span>La password deve essere almeno di 6 caratteri</span>
