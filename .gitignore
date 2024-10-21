@@ -47,3 +47,4 @@ Thumbs.db
 
 /src/environments
 .firebase/
+package-lock.json
