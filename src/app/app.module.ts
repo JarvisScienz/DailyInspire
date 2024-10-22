@@ -1,10 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { NgModule } from '@angular/core';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ReactiveFormsModule, FormsModule , } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule } from '@angular/fire/auth';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { BsDropdownModule } from "ngx-bootstrap/dropdown";
 import { CollapseModule } from "ngx-bootstrap/collapse";
@@ -39,17 +43,26 @@ import { NavbarComponent } from './component/navbar/navbar.component';
 	BrowserAnimationsModule,
 	HttpClientModule,
     AppRoutingModule,
-	AngularFireModule.initializeApp(environment.firebaseConfig),
-	AngularFireAuthModule,
 	NgbModule,
 	FormsModule,
+	CommonModule,
+	RouterModule,
 	ReactiveFormsModule,
 	BsDropdownModule.forRoot(),
 	CollapseModule.forRoot(),
 	TabsModule.forRoot(),
-	TooltipModule.forRoot()
+	TooltipModule.forRoot(),
+	AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+	provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+	provideAuth(() => getAuth())
+  ],
+  bootstrap: [AppComponent],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA,
+    NO_ERRORS_SCHEMA
+  ]
 })
 export class AppModule { }

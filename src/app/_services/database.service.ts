@@ -1,128 +1,120 @@
+// phrase.service.ts
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { Database, ref, query, orderByChild, equalTo, get, child, set, limitToLast, push } from '@angular/fire/database';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-import { PhraseClass } from './../_models/PhraseClass';
+import { PhraseClass } from '../_models/PhraseClass';
 
 @Injectable({
-	providedIn: 'root'
+  providedIn: 'root'
 })
 export class DatabaseService {
-	private databasePath = '/phrases'; // Sostituisci con il percorso corretto nel tuo database
-	quoteRef!: AngularFireObject<any>;
+  databasePath = '/phrases';
+  constructor(private db: AngularFireDatabase) {}
 
-	constructor(private db: AngularFireDatabase, private auth: AngularFireAuth) { }
+  // Metodo per ottenere tutte le frasi dalla collezione 'phrases'
+  getAllPhrases(): Observable<any[]> {
+    return this.db.list(this.databasePath).snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c => ({ key: c.payload.key, ...(c.payload.val() as {}) }))
+      )
+    );
+  }
 
-	getAllData(): Observable<any> {
-		const dataRef: AngularFireObject<any> = this.db.object(this.databasePath);
-		return dataRef.valueChanges();
-	}
+  // Metodo per ottenere frasi non pubblicate
+  getAllPhrasesNotPublicated(): Observable<any> {
+    return this.db.list(this.databasePath, ref =>
+      ref.orderByChild('datePublication').equalTo(null) // Ordina per datePublication e prendi gli ultimi 5
+    ).snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c => ({ key: c.payload.key, ...(c.payload.val() as {}) }))
+      )
+    );
+  }
 
-	getAllPhrasesNotPublicated(): Observable<any> {
-		const listRef = this.db.list(this.databasePath, (ref) =>
-			ref.orderByChild('datePublication').equalTo(null)
-		);
+  // Metodo per ottenere frasi pubblicate in un determinato giorno
+  getPhrasesPublicatedInDay(day: string): Observable<any> {
+    return this.db.list(this.databasePath, ref =>
+      ref.orderByChild('datePublication').equalTo(day) // Ordina per datePublication e prendi gli ultimi 5
+    ).snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c => ({ key: c.payload.key, ...(c.payload.val() as {}) }))
+      )
+    );
+  }
 
-		return listRef.valueChanges();
-	}
+  // Metodo per ottenere frasi per un contributore specifico
+  getPhrasesByContributor(contributorID: string): Observable<any> {
+    return this.db.list(this.databasePath, ref =>
+      ref.orderByChild('contributor').equalTo(contributorID) // Ordina per datePublication e prendi gli ultimi 5
+    ).snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c => ({ key: c.payload.key, ...(c.payload.val() as {}) }))
+      )
+    );
+  }
 
-	getPhrasesPublicatedInDay(day: string): Observable<any> {
-		const listRef = this.db.list(this.databasePath, (ref) =>
-			ref.orderByChild('datePublication').equalTo(day)
-		);
+  // Metodo per ottenere frasi da approvare
+  getPhrasesToApproved(): Observable<any[]> {
+    return this.db.list(this.databasePath, ref =>
+      ref.orderByChild('approved').equalTo(false) // Ordina per datePublication e prendi gli ultimi 5
+    ).snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c => ({ key: c.payload.key, ...(c.payload.val() as {}) }))
+      )
+    );
+  }
 
-		return listRef.valueChanges();
-	}
+  // Metodo per aggiungere una frase
+  addNewQuote(newQuote: PhraseClass): Promise<boolean> {
+    const quotesRef = ref(this.db.database, 'phrases'); // Sostituisci 'phrases' con il percorso corretto se necessario
+    const newQuoteRef = push(quotesRef); // Crea un nuovo riferimento univoco
+    return set(newQuoteRef, newQuote) // Usa set() per inserire i dati
+      .then(() => {
+        console.log('Nuova quote inserita con successo');
+        return true;
+      })
+      .catch((error) => {
+        console.error('Errore durante l\'inserimento della quote:', error);
+        return false;
+      });
+  }
 
-	getPhrasesByContributor(contributorID: string): Observable<any> {
-		const listRef = this.db.list(this.databasePath, (ref) =>
-			ref.orderByChild('contributor').equalTo(contributorID)
-		);
+  // Metodo per aggiornare una frase
+  update(key: number, updatedQuote: any): Promise<void> {
+    const quoteRef = ref(this.db.database, `phrases/${key}`);
+    return set(quoteRef, updatedQuote) // Usa set() per sovrascrivere i dati del record
+    .then(() => {
+      console.log('Quote aggiornata con successo');
+    })
+    .catch((error) => {
+      console.error('Errore durante l\'aggiornamento della quote:', error);
+    });
+  }
 
-		return listRef.valueChanges();
-	}
+  getLastNPhrases(index: number): Observable<any> {
+    return this.db.list(this.databasePath, ref =>
+      ref.orderByChild('datePublication').limitToLast(index) // Ordina per datePublication e prendi gli ultimi 5
+    ).snapshotChanges().pipe(
+      map(changes =>
+        changes.map(c => ({ key: c.payload.key, ...(c.payload.val() as {}) }))
+      )
+    );
+  }
 
-	/*getPhrasesToApproved(): Observable<any> {
-		const listRef = this.db.list(this.databasePath, (ref) =>
-			ref.orderByChild('approved').equalTo(false)
-		);
+  // Metodo per controllare il ruolo di un utente
+  checkUserRole(userUID: string): Promise<string | null> {
+    const roleRef = ref(this.db.database, `users/${userUID}/role`);
+    return get(roleRef).then(snapshot => snapshot.exists() ? snapshot.val() : null);
+  }
 
-		return listRef.valueChanges();
-	}*/
+  // Metodo per assegnare un ruolo a un utente
+  assignUserRole(uid: string, role: string): Promise<void> {
+    const roleRef = ref(this.db.database, `users/${uid}/role`);
+    return set(roleRef, role);
+  }
 
-	getPhrasesToApproved(): Observable<any[]> {
-		const listRef = this.db.list(this.databasePath, (ref) =>
-			ref.orderByChild('approved').equalTo(false)
-		);
-
-		return listRef.snapshotChanges().pipe(
-			map(actions =>
-				actions.map(action => ({
-					id: action.key,
-					// ...action.payload.val()
-					quote: this.getPayload(action).quote,
-					approved: this.getPayload(action).approved,
-					author: this.getPayload(action).author,
-					contributor: this.getPayload(action).contributor,
-				}))
-			)
-		);
-	}
-
-	async addPhrase(phrase: PhraseClass): Promise<boolean> {
-		return new Promise<boolean>((resolve, reject) => {
-			this.auth.currentUser.then(user => {
-				if (user) {
-					this.db.list(this.databasePath).push(phrase)
-						.then(() => {
-							console.log('Inserimento avvenuto con successo');
-							resolve(true); // Inserimento riuscito
-						})
-						.catch(error => {
-							console.log('Errore durante l\'inserimento:', error);
-							reject(false); // Inserimento fallito
-						});
-				} else {
-					console.log('Utente non autenticato');
-					reject(false); // Utente non autenticato, inserimento fallito
-				}
-			});
-		});
-	}
-
-	update(key: number, quote: any): Promise<void> {
-		this.quoteRef = this.db.object('phrases/' + key);
-		return this.quoteRef.update(quote);
-	}
-
-	getLastNPhrases(index: number) {
-		const listRef = this.db.list(this.databasePath, (ref) =>
-			ref.orderByChild('datePublication')
-				.startAt(null)
-				.limitToLast(index)
-		);
-
-		return listRef.valueChanges();
-	}
-
-	checkUserRole(userUID: string): Promise<string | null> {
-		return new Promise<string | null>((resolve, reject) => {
-			this.db.object(`users/${userUID}/role`).valueChanges().subscribe(
-				role => {
-					resolve(role as string);
-				},
-				error => {
-					reject(error);
-				}
-			);
-		});
-	}
-
-	/*isAdminLogged(userUID: string) {
-		return (this.checkUserRole(userUID) == "admin") ? true : false;
-	}*/
 	async isAdminLogged(userUID: string) {
 		var adminLogged = false;
 		try {
@@ -139,13 +131,7 @@ export class DatabaseService {
 		return adminLogged;
 	}
 
-	assignUserRole(uid: string, role: string): Promise<void> {
-		return this.db.object(`users/${uid}/role`).set(role);
-	}
-
-
 	getPayload(action: any) {
 		return action.payload.val();
 	}
 }
-

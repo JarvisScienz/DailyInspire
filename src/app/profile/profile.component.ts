@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Injector } from '@angular/core';
 
 import { DateService } from '../_services/date.service';
 import { DatabaseService } from '../_services/database.service';
-import { AuthService } from '../_services/auth.service';
 import { CookiesService } from '../_services/cookies.service';
 
 import { PhraseClass } from './../_models/PhraseClass';
@@ -36,13 +35,11 @@ export class ProfileComponent implements OnInit {
 	phrase?: PhraseClass;
 	adminIsLogged?: any;
 
-	constructor(private http: HttpClient,
-		private dateService: DateService,
-		private databaseService: DatabaseService,
-		private authService: AuthService,
+	constructor(private dateService: DateService,
 		private cookiesService: CookiesService,
 		private formBuilder: UntypedFormBuilder,
-		private modalService: NgbModal) {
+		private modalService: NgbModal,
+		private injector: Injector) {
 		this.todayDate = dateService.getCurrentDate();
 		this.numberFromDate = dateService.getNumberDayOfTheYear();
 		this.userLoggedId = this.cookiesService.getCookie("userID");
@@ -70,8 +67,9 @@ export class ProfileComponent implements OnInit {
 	}
 
 	async sendPhrase() {
+		const dbService = this.injector.get(DatabaseService);
 		this.phrase = new PhraseClass(this.quote, this.author, '', this.userLoggedId, false);
-		var result = await this.databaseService.addPhrase(this.phrase);
+		var result = await dbService.addNewQuote(this.phrase);
 		if (result) {
 			this.resetForm();
 			this.openModalConfirm("Frase aggiunta", "Frase aggiunta");
@@ -82,7 +80,8 @@ export class ProfileComponent implements OnInit {
 	}
 	
 	async isAdminLogged (){
-		this.adminIsLogged = await this.databaseService.isAdminLogged(this.userLoggedId);
+		const dbService = this.injector.get(DatabaseService);
+		this.adminIsLogged = await dbService.isAdminLogged(this.userLoggedId);
 		
 		if(this.adminIsLogged){
 			this.loadPhrasesToApprove();
@@ -92,13 +91,15 @@ export class ProfileComponent implements OnInit {
 	}
 
 	loadHistoricalPhrases() {
-		this.databaseService.getPhrasesByContributor(this.userLoggedId).subscribe(data => {
+		const dbService = this.injector.get(DatabaseService);
+		dbService.getPhrasesByContributor(this.userLoggedId).subscribe(data => {
 			this.phrases = data;
 		});
 	}
 
 	loadPhrasesToApprove() {
-		this.databaseService.getPhrasesToApproved().subscribe(data => {
+		const dbService = this.injector.get(DatabaseService);
+		dbService.getPhrasesToApproved().subscribe(data => {
 			this.phrases = data;
 		});
 	}
@@ -125,7 +126,8 @@ export class ProfileComponent implements OnInit {
 	}
 	
 	approvePhrase(phrase: any){
+		const dbService = this.injector.get(DatabaseService);
 		phrase.approved = true;
-		this.databaseService.update(phrase.id, phrase);
+		dbService.update(phrase.key, phrase);
 	}
 }

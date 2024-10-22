@@ -1,11 +1,10 @@
 import { Component, HostListener } from '@angular/core';
 import { Router} from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 
 import { AuthService } from '../_services/auth.service'
 import { CookiesService } from '../_services/cookies.service'
-import { DatabaseService } from '../_services/database.service'
 
 @Component({
 	selector: 'app-login',
@@ -22,8 +21,8 @@ export class LoginComponent {
 	focus1 = false;
 	focus2 = false;
 
-	constructor(private afAuth: AngularFireAuth, private formBuilder: UntypedFormBuilder, private authService: AuthService,
-	private router: Router, private cookiesservice:CookiesService, private databaseService: DatabaseService) { }
+	constructor(private afAuth: Auth, private formBuilder: UntypedFormBuilder, private authService: AuthService,
+	private router: Router, private cookiesservice:CookiesService) { }
 
 	@HostListener("document:mousemove", ["$event"])
 	onMouseMove(e: any) {
@@ -118,7 +117,7 @@ export class LoginComponent {
 
 		this.loading = true;
 
-		this.afAuth.signInWithEmailAndPassword(this.f.email.value, this.f.password.value)
+		signInWithEmailAndPassword(this.afAuth, this.f.email.value, this.f.password.value)
 			.then(response => {
 				this.loading = false;
 				console.log('User logged in successfully!', response);
@@ -129,7 +128,7 @@ export class LoginComponent {
 				this.authService.setUserData(response.user!.uid, this.f.email.value);
 				// Puoi eseguire altre operazioni dopo il login dell'utente
 			})
-			.catch(error => {
+			.catch((error: any) => {
 				this.loading = false;
 				this.wrongCredential = true;
 				console.error('Error logging in:', error);

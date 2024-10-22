@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injector } from '@angular/core';
 
 import { DateService } from '../_services/date.service';
 import { DatabaseService } from '../_services/database.service';
@@ -21,9 +21,8 @@ export class DailyPhraseComponent implements OnInit {
 	focus2: any;
 	data: any;
 
-	constructor(private http: HttpClient,
-		private dateService: DateService,
-		private databaseService: DatabaseService) {
+	constructor(private dateService: DateService, 
+		private injector: Injector) {
 		this.todayDate = dateService.getCurrentDate();
 		this.numberFromDate = dateService.getNumberDayOfTheYear();
 	}
@@ -45,12 +44,13 @@ export class DailyPhraseComponent implements OnInit {
 	}
 
 	loadPhrases() {
-		this.databaseService.getPhrasesPublicatedInDay(this.dateService.getCurrentDateNotParsed()).subscribe(data => {
+		const dbService = this.injector.get(DatabaseService);
+		dbService.getPhrasesPublicatedInDay(this.dateService.getCurrentDateNotParsed()).subscribe(data => {
 			if (data.length != 0){
 				this.quote = data[0].quote;
 				this.author = data[0].author;	
 			}else{
-				this.databaseService.getAllPhrasesNotPublicated().subscribe(data => {
+				dbService.getAllPhrasesNotPublicated().subscribe(data => {
 					this.phrases = data;
 					this.selectDailyPhrase(this.numberFromDate);
 				});	
@@ -61,9 +61,10 @@ export class DailyPhraseComponent implements OnInit {
 	}
 
 	updateDateProduction(randomIndex: number) {
+		const dbService = this.injector.get(DatabaseService);
 		var dateToUpdate = this.phrases[randomIndex];
 		dateToUpdate.datePublication = this.dateService.getCurrentDateNotParsed();
-		this.databaseService.update(randomIndex, dateToUpdate);
+		dbService.update(randomIndex, dateToUpdate);
 	}
 
 	selectDailyPhrase(numberFromDate: number) {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { Auth} from '@angular/fire/auth';
 
 import { User } from '../_models/user';
 import { CookiesService } from '../_services/cookies.service'
@@ -17,7 +17,7 @@ export class AuthService {
   	isLoggedIn$: Observable<boolean> = this.isLoggedInSubject.asObservable();
 
 	constructor(
-		private afAuth: AngularFireAuth, private cookiesService: CookiesService,
+		private afAuth: Auth, private cookiesService: CookiesService,
 		private router: Router){
 	}
  	public get currentUserValue(): any {
@@ -50,7 +50,7 @@ export class AuthService {
 				this.isLoggedInSubject.next(false);
 				this.router.navigate(["/daily-phrase"]);
 			})
-			.catch(error => {
+			.catch((error: any) => {
 				console.error('Error logging out:', error);
 			});
 		//this.currentUserSubject?.next(new User("", ""));

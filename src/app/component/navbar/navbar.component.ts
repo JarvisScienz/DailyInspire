@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Location } from "@angular/common";
 import { Router } from '@angular/router';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { CookiesService } from '../../_services/cookies.service'

@@ -1,9 +1,10 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router} from '@angular/router';
-import { UntypedFormBuilder, UntypedFormGroup, Validators, FormControl, ReactiveFormsModule  } from '@angular/forms';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Auth, createUserWithEmailAndPassword, UserCredential  } from '@angular/fire/auth';
 
-import { DatabaseService } from '../_services/database.service'
+import { DatabaseService } from '../_services/database.service';
+import { Injector } from '@angular/core';
 
 @Component({
 	selector: 'app-registration',
@@ -20,9 +21,9 @@ export class RegistrationComponent implements OnInit{
 	focus1 = false;
 	focus2 = false;
 
-	constructor(private afAuth: AngularFireAuth,
+	constructor(private afAuth: Auth,
 		private formBuilder: UntypedFormBuilder, private router: Router,
-		private databaseService: DatabaseService) { }
+		private injector: Injector) { }
 
 	@HostListener("document:mousemove", ["$event"])
 	onMouseMove(e: any) {
@@ -108,13 +109,14 @@ export class RegistrationComponent implements OnInit{
 		if (this.registrationForm.invalid) {
 			return;
 		}
-		this.afAuth.createUserWithEmailAndPassword(this.f.email.value, this.f.password.value)
-			.then(response => {
+		createUserWithEmailAndPassword(this.afAuth, this.f.email.value, this.f.password.value)
+			.then((response: UserCredential) => {
 				console.log('User created successfully!', response);
-				this.databaseService.assignUserRole(response.user!.uid, "user");
+				const dbService = this.injector.get(DatabaseService);
+				//dbService.assignUserRole(response.user!.uid, "user");
 				this.router.navigate(["/profile"]);
 			})
-			.catch(error => {
+			.catch((error: any) => {
 				console.error('Error creating user:', error);
 			});
 	}

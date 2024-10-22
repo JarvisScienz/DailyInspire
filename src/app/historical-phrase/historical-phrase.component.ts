@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injector } from '@angular/core';
 
 import { DateService } from '../_services/date.service';
 import { DatabaseService } from '../_services/database.service';
@@ -24,12 +24,13 @@ export class HistoricalPhraseComponent implements OnInit {
 	currentIndex: number = 0;
 	disabledPrevButton: boolean = true;
 	disabledNextButton: boolean = false;
+	dbService: DatabaseService;
 
-	constructor(private http: HttpClient,
-		private dateService: DateService,
-		private databaseService: DatabaseService) {
+	constructor(private dateService: DateService,
+		private injector: Injector) {
 		this.todayDate = dateService.getCurrentDate();
 		this.numberFromDate = dateService.getNumberDayOfTheYear();
+		this.dbService = this.injector.get(DatabaseService);
 	}
 
 	ngOnInit() {
@@ -38,24 +39,24 @@ export class HistoricalPhraseComponent implements OnInit {
 		body.classList.add("index-page");
 	}
 
-
-
 	scrollToDownload(element: any) {
 		element.scrollIntoView({ behavior: "smooth" });
 	}
 
 	loadHistoricalPhrases() {
-		this.databaseService.getLastNPhrases(5).subscribe(data => {
+		
+		this.dbService.getLastNPhrases(5).subscribe((data: any) => {
 			this.phrases = data;
 			this.selectDailyPhrase();
 		});
 	}
 
-	testUpdate() {
-		var dateToUpdate = this.phrases[0];
-		dateToUpdate.datePublication = "20230622";
-		this.databaseService.update(0, dateToUpdate);
-	}
+	// testUpdate() {
+	// 	const dbService = this.injector.get(DatabaseService);
+	// 	var dateToUpdate = this.phrases[0];
+	// 	dateToUpdate.datePublication = "20230622";
+	// 	dbService.update(0, dateToUpdate);
+	// }
 
 	selectDailyPhrase() {
 		this.quote = this.phrases[this.currentIndex].quote;
@@ -82,7 +83,7 @@ export class HistoricalPhraseComponent implements OnInit {
 
 		fs.writeFile(filePath, randomIndex.toString(), (err) => {
 			if (err) {
-				console.error('Si è verificato un errore durante la scrittura del file:', err);
+				console.error('Si ï¿½ verificato un errore durante la scrittura del file:', err);
 			} else {
 				console.log('Valore casuale scritto correttamente nel file:', filePath);
 			}
