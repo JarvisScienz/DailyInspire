@@ -48,4 +48,3 @@ Thumbs.db
 /src/environments
 .firebase/
 .angular/
-package-lock.json
