@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/daily-inspire",
+    "public": "dist/daily-inspire/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
