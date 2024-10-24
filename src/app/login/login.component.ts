@@ -93,8 +93,8 @@ export class LoginComponent {
 
 	ngOnInit() {
 		this.loginForm = this.formBuilder.group({
-			email: ['', Validators.required],
-			password: ['', Validators.required]
+			email: ['', [Validators.required, Validators.email]],
+			password: ['', [Validators.required, Validators.minLength(6)]]
 		});
 		
 		var body = document.getElementsByTagName("body")[0];

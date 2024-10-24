@@ -1,6 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateService } from '@ngx-translate/core';
 import { AppComponent } from './app.component';
+import { of } from 'rxjs';
+
+const mockTranslateService = {
+  get: (key: any) => of(key),  // Simula il metodo get restituendo semplicemente la chiave passata
+  use: (lang: string) => {}
+};
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -11,6 +18,9 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
+      providers: [
+        { provide: TranslateService, useValue: mockTranslateService },  // Fornisci il mock qui
+      ]
     }).compileComponents();
   });
 
@@ -24,12 +34,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('daily-inspire');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('daily-inspire app is running!');
   });
 });

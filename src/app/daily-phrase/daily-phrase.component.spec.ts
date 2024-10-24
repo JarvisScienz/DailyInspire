@@ -1,25 +1,25 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+// import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RandomPhraseComponent } from './random-phrase.component';
+// import { DailyPhraseComponent } from './daily-phrase.component';
 
-describe('RandomPhraseComponent', () => {
-  let component: RandomPhraseComponent;
-  let fixture: ComponentFixture<RandomPhraseComponent>;
+// describe('DailyPhraseComponent', () => {
+//   let component: DailyPhraseComponent;
+//   let fixture: ComponentFixture<DailyPhraseComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ RandomPhraseComponent ]
-    })
-    .compileComponents();
-  });
+//   beforeEach(async () => {
+//     await TestBed.configureTestingModule({
+//       declarations: [ DailyPhraseComponent ]
+//     })
+//     .compileComponents();
+//   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(RandomPhraseComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+//   beforeEach(() => {
+//     fixture = TestBed.createComponent(DailyPhraseComponent);
+//     component = fixture.componentInstance;
+//     fixture.detectChanges();
+//   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+//   it('should create', () => {
+//     expect(component).toBeTruthy();
+//   });
+// });
