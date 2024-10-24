@@ -3,6 +3,7 @@ import { Router} from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 
+
 import { AuthService } from '../_services/auth.service'
 import { CookiesService } from '../_services/cookies.service'
 
@@ -22,7 +23,8 @@ export class LoginComponent {
 	focus2 = false;
 
 	constructor(private afAuth: Auth, private formBuilder: UntypedFormBuilder, private authService: AuthService,
-	private router: Router, private cookiesservice:CookiesService) { }
+	private router: Router, private cookiesservice:CookiesService) {
+	 }
 
 	@HostListener("document:mousemove", ["$event"])
 	onMouseMove(e: any) {
@@ -87,6 +89,7 @@ export class LoginComponent {
 			posY * -0.02 +
 			"deg)";
 	}
+
 
 	ngOnInit() {
 		this.loginForm = this.formBuilder.group({

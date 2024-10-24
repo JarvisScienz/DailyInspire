@@ -12,40 +12,40 @@
 							<img class="img-center img-fluid rounded-circle"
 								src="assets/img/mike.jpg" />
 
-							<h4 class="title">Suggerisci una frase</h4>
+							<h4 class="title">{{ "suggestQuote" | translate }}</h4>
 						</div>
 						<div class="card-body">
 							<tabset
 								class="nav-tabs-danger justify-content-center tab-subcategories">
 							<form [formGroup]="addPhraseForm" (ngSubmit)="sendPhrase()">
 								<div class="row">
-									<label class="col-sm-3 col-form-label"> Frase </label>
+									<label class="col-sm-3 col-form-label"> {{ "quote" | translate }} </label>
 									<div class="col-sm-9">
 										<div class="form-group">
 											<input class="form-control"
-												placeholder="Scrivi qui la tua frase..." type="text"
+												placeholder="{{ 'writeYourQuote' | translate }}" type="text"
 												formControlName="quote" name="quote" [(ngModel)]="quote"/>
 												<div *ngIf="addPhraseForm.get('quote')?.hasError('required') && addPhraseForm.get('quote')?.touched" class="text-danger">
-											    	<span>La frase è obbligatoria.</span>
+											    	<span>{{ "quoteRequired" | translate }}</span>
 											    </div>
 										</div>
 									</div>
 								</div>
 								<div class="row">
-									<label class="col-sm-3 col-form-label"> Autore </label>
+									<label class="col-sm-3 col-form-label"> {{ "author" | translate }} </label>
 									<div class="col-sm-9">
 										<div class="form-group">
-											<input class="form-control" placeholder="Autore" type="text"
+											<input class="form-control" placeholder="{{ 'author' | translate }}" type="text"
 												formControlName="author" name="author" [(ngModel)]="author"/>
 										    <div *ngIf="addPhraseForm.get('author')?.hasError('required') && addPhraseForm.get('author')?.touched" class="text-danger">
-										      L'autore è obbligatorio.
+												{{ "authorRequired" | translate }}
 										    </div>
 										</div>
 									</div>
 								</div>
 								<button class="btn btn-simple btn-danger btn-round float-right"
 									type="submit" [disabled]="addPhraseForm.invalid">
-									<i class="tim-icons icon-send"> Invia</i>
+									<i class="tim-icons icon-send"> {{ "send" | translate }}</i>
 								</button>
 							</form>
 							</tabset>
@@ -62,7 +62,7 @@
 								<table class="table tablesorter" id="plain-table">
 									<thead class="text-danger">
 										<tr>
-											<th class="header">Le tue frasi...</th>
+											<th class="header">{{ "yourQuotes" | translate }}</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -89,7 +89,7 @@
 								<table class="table tablesorter" id="plain-table">
 									<thead class="text-danger">
 										<tr>
-											<th class="header">Frasi da approvare</th>
+											<th class="header">{{ "quotesToApprove" | translate }}</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -97,7 +97,7 @@
 											<td>{{phrase.quote}}</td>
 											<td>{{phrase.author}}</td>
 											<td>{{phrase.contributor}}</td>
-											<td><button class="btn btn-success btn-simple btn-round" (click)="approvePhrase(phrase)">Approva</button></td>
+											<td><button class="btn btn-success btn-simple btn-round" (click)="approvePhrase(phrase)">{{ "approve" | translate }}</button></td>
 										</tr>
 									</tbody>
 								</table>

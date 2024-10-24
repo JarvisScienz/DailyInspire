@@ -3,7 +3,7 @@
 	<div class="container">
 		<div class="navbar-translate">
 			<a class="navbar-brand" placement="bottom" [routerLink]="['/']"
-				target="_blank" tooltip="Designed and Coded by Creative Tim">
+				target="_blank" tooltip="DailyInspire your daily inspiration">
 				<span> DailyInspire </span>
 			</a>
 			<button aria-controls="navigation-index"
@@ -54,25 +54,25 @@
 				<li class="dropdown nav-item" dropdown><a
 					class="dropdown-toggle nav-link dropdown-toggle"
 					data-toggle="dropdown" dropdownToggle href="javascript:void(0)">
-						<i class="fa fa-cogs d-lg-none d-xl-none"> </i> Menu
+						<i class="fa fa-cogs d-lg-none d-xl-none"> </i> {{ "menu" | translate }}
 				</a>
 					<div class="dropdown-menu dropdown-with-icons" *dropdownMenu>
 						<a class="dropdown-item" [routerLink]="['/login']" *ngIf="!userLogged"> <i
-							class="tim-icons fa fa-sign-in"> </i> Login
+							class="tim-icons fa fa-sign-in"> </i> {{ "login" | translate }}
 						</a>
 						<a class="dropdown-item" [routerLink]="['/registration']" *ngIf="!userLogged"> <i
-							class="tim-icons fa fa-user-plus"> </i> Registrati
+							class="tim-icons fa fa-user-plus"> </i> {{ "signUp" | translate }}
 						</a>
 						<a class="dropdown-item" [routerLink]="['/daily-phrase']"> <i
-							class="tim-icons icon-bullet-list-67"> </i> Giornaliero
+							class="tim-icons icon-bullet-list-67"> </i> {{ "daily" | translate }}
 						</a>
 						<a class="dropdown-item" [routerLink]="['/historical']"> <i
-							class="tim-icons icon-bullet-list-67"> </i> Storico
+							class="tim-icons icon-bullet-list-67"> </i> {{ "historical" | translate }}
 						</a> <a class="dropdown-item" [routerLink]="['/profile']" *ngIf="userLogged"> <i
-							class="tim-icons icon-single-02"> </i> Profilo
+							class="tim-icons icon-single-02"> </i> {{ "profile" | translate }}
 						</a>
 						<a class="dropdown-item" (click)="logout()" *ngIf="userLogged"> <i
-							class="tim-icons fa fa-power-off"> </i> Logout
+							class="tim-icons fa fa-power-off"> </i> {{ "logout" | translate }}
 						</a>
 					</div>
 				</li>

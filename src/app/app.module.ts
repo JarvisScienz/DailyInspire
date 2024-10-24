@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ReactiveFormsModule, FormsModule , } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
@@ -14,6 +14,8 @@ import { BsDropdownModule } from "ngx-bootstrap/dropdown";
 import { CollapseModule } from "ngx-bootstrap/collapse";
 import { TabsModule } from "ngx-bootstrap/tabs";
 import { TooltipModule } from "ngx-bootstrap/tooltip";
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -26,6 +28,11 @@ import { ProfileComponent } from './profile/profile.component';
 import { environment } from '../environments/environment';
 
 import { NavbarComponent } from './component/navbar/navbar.component';
+import { ModalConfirmComponent } from './modal/confirm/modal-confirm.component';
+
+export function HttpLoaderFactory(http: HttpClient) {
+	return new TranslateHttpLoader(http, '../assets/i18n/', '.json');
+  }
 
 @NgModule({
   declarations: [
@@ -36,7 +43,8 @@ import { NavbarComponent } from './component/navbar/navbar.component';
 	RegistrationComponent,
 	LoginComponent,
 	NavbarComponent,
-	ProfileComponent
+	ProfileComponent,
+	ModalConfirmComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +61,14 @@ import { NavbarComponent } from './component/navbar/navbar.component';
 	TabsModule.forRoot(),
 	TooltipModule.forRoot(),
 	AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFirestoreModule
+    AngularFirestoreModule,
+	TranslateModule.forRoot({
+		loader: {
+		  provide: TranslateLoader,
+		  useFactory: HttpLoaderFactory,
+		  deps: [HttpClient]
+		}
+	})
   ],
   providers: [
 	provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
