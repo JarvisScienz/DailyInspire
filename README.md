@@ -32,7 +32,7 @@ npm run start
 
 ```
 
-## 🚀 Personal notes
+## 📝 Personal notes
 
 ### Deploy on firebase
 ```bash
