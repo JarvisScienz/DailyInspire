@@ -46,5 +46,5 @@ testem.log
 Thumbs.db
 
 /src/environments
-.firebase/
+/.firebase
 .angular/
