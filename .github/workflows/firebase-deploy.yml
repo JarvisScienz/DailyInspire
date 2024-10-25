@@ -31,7 +31,7 @@ jobs:
             echo "    storageBucket: '${{ secrets.STORAGEBUCKET }}'," >> src/environments/environment.ts
             echo "    messagingSenderId: '${{ secrets.MESSAGINGSENDERID }}'," >> src/environments/environment.ts
             echo "    appId: '${{ secrets.APPID }}'," >> src/environments/environment.ts
-            echo "    appId: '${{ secrets.MEASUREMENTID }}'," >> src/environments/environment.ts
+            echo "    measurementId: '${{ secrets.MEASUREMENTID }}'," >> src/environments/environment.ts
             echo "  }" >> src/environments/environment.ts
             echo "};" >> src/environments/environment.ts
 
@@ -48,7 +48,7 @@ jobs:
           echo "    storageBucket: '${{ secrets.STORAGEBUCKET }}'," >> src/environments/environment.prod.ts
           echo "    messagingSenderId: '${{ secrets.MESSAGINGSENDERID }}'," >> src/environments/environment.prod.ts
           echo "    appId: '${{ secrets.APPID }}'," >> src/environments/environment.prod.ts
-          echo "    appId: '${{ secrets.MEASUREMENTID }}'," >> src/environments/environment.prod.ts
+          echo "    measurementId: '${{ secrets.MEASUREMENTID }}'," >> src/environments/environment.prod.ts
           echo "  }" >> src/environments/environment.prod.ts
           echo "};" >> src/environments/environment.prod.ts
 
