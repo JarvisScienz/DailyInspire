@@ -18,6 +18,21 @@ jobs:
       with:
         node-version: '18' # Specifica la versione di Node.js richiesta dal tuo progetto
 
+    - name: Generate environment.ts
+      run: |
+            mkdir -p src/environments
+            echo "export const environment = {" > src/environments/environment.ts
+            echo "  production: true," >> src/environments/environment.ts
+            echo "  firebaseConfig: {" >> src/environments/environment.ts
+            echo "    apiKey: '${{ secrets.APIKEY }}'," >> src/environments/environment.ts
+            echo "    authDomain: '${{ secrets.AUTHDOMAIN }}'," >> src/environments/environment.ts
+            echo "    projectId: '${{ secrets.PROJECTID }}'," >> src/environments/environment.ts
+            echo "    storageBucket: '${{ secrets.STORAGEBUCKET }}'," >> src/environments/environment.ts
+            echo "    messagingSenderId: '${{ secrets.MESSAGINGSENDERID }}'," >> src/environments/environment.ts
+            echo "    appId: '${{ secrets.APPID }}'," >> src/environments/environment.ts
+            echo "  }" >> src/environments/environment.ts
+            echo "};" >> src/environments/environment.ts
+
     - name: Generate environment.prod.ts
       run: |
           mkdir -p src/environments
