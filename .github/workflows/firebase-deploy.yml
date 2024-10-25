@@ -26,10 +26,12 @@ jobs:
             echo "  firebaseConfig: {" >> src/environments/environment.ts
             echo "    apiKey: '${{ secrets.APIKEY }}'," >> src/environments/environment.ts
             echo "    authDomain: '${{ secrets.AUTHDOMAIN }}'," >> src/environments/environment.ts
+            echo "    databaseURL: '${{ secrets.DATABASEURL }}'," >> src/environments/environment.ts
             echo "    projectId: '${{ secrets.PROJECTID }}'," >> src/environments/environment.ts
             echo "    storageBucket: '${{ secrets.STORAGEBUCKET }}'," >> src/environments/environment.ts
             echo "    messagingSenderId: '${{ secrets.MESSAGINGSENDERID }}'," >> src/environments/environment.ts
             echo "    appId: '${{ secrets.APPID }}'," >> src/environments/environment.ts
+            echo "    appId: '${{ secrets.MEASUREMENTID }}'," >> src/environments/environment.ts
             echo "  }" >> src/environments/environment.ts
             echo "};" >> src/environments/environment.ts
 
@@ -41,10 +43,12 @@ jobs:
           echo "  firebaseConfig: {" >> src/environments/environment.prod.ts
           echo "    apiKey: '${{ secrets.APIKEY }}'," >> src/environments/environment.prod.ts
           echo "    authDomain: '${{ secrets.AUTHDOMAIN }}'," >> src/environments/environment.prod.ts
+          echo "    databaseURL: '${{ secrets.DATABASEURL }}'," >> src/environments/environment.prod.ts
           echo "    projectId: '${{ secrets.PROJECTID }}'," >> src/environments/environment.prod.ts
           echo "    storageBucket: '${{ secrets.STORAGEBUCKET }}'," >> src/environments/environment.prod.ts
           echo "    messagingSenderId: '${{ secrets.MESSAGINGSENDERID }}'," >> src/environments/environment.prod.ts
           echo "    appId: '${{ secrets.APPID }}'," >> src/environments/environment.prod.ts
+          echo "    appId: '${{ secrets.MEASUREMENTID }}'," >> src/environments/environment.prod.ts
           echo "  }" >> src/environments/environment.prod.ts
           echo "};" >> src/environments/environment.prod.ts
 
