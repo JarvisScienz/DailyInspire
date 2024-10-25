@@ -1,29 +1,44 @@
-# DailyInspire
+# 📚 DailyInspire - Your daily inspiration 💡✍
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.1.
+**Welcome to DailyInspire!**
+This project was born out of a passion for quotes read on books and listened on podcast. As a software developer my idea was to mix tech knowledge and experiments with one of my passion. 
+I strongly believe in the power of a word or a phrase and I think that the right way to start the day is by getting inspired by great quotes.
 
-## Development server
+🌐 Live Demo
+You can explore the live version of the DailyInspire [here](https://dailyinspire-41b75.web.app/)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## 🎯 Purpose of the Project
+This project aims to:
+- 📚 Gather all the quotes read everywhere and wrote on thousands piece of post it
+- 🛠️ Doing tech experiments. 
 
-## Code scaffolding
+## 🛠️ Technologies Used
+This project leverages modern technologies to provide a seamless and efficient experience for both developers and users:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+![Angular](https://img.shields.io/badge/Angular-DD0031?logo=angular&logoColor=white) 
 
-## Build
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?logo=firebase&logoColor=black)  
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## 🚀 Getting Started
+To clone the project to your local machine, open your terminal and run:
 
-## Running unit tests
+```bash
+git clone https://github.com/JarvisScienz/DailyInspire.git
+cd dailyInspire
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+npm install 
 
-## Running end-to-end tests
+npm run start
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+```
 
-## Further help
+## 🚀 Personal notes
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-=======
-# DailyInspire
+### Deploy on firebase
+```bash
+ng build --prod --aot
+firebase deploy
+```
+
+### Deploy with GitHub Actions
+Create environment vars on GitHub
