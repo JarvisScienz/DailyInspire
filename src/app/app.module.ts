@@ -26,6 +26,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { environment } from '../environments/environment';
+import { EmailComponent } from './email-service/email.component';
 
 import { NavbarComponent } from './component/navbar/navbar.component';
 import { ModalConfirmComponent } from './modal/confirm/modal-confirm.component';
@@ -44,7 +45,8 @@ export function HttpLoaderFactory(http: HttpClient) {
 	LoginComponent,
 	NavbarComponent,
 	ProfileComponent,
-	ModalConfirmComponent
+	ModalConfirmComponent,
+	EmailComponent
   ],
   imports: [
     BrowserModule,

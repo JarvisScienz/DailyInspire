@@ -1,7 +1,7 @@
 // phrase.service.ts
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { Database, ref, query, orderByChild, equalTo, get, child, set, limitToLast, push } from '@angular/fire/database';
+import { Database, ref, query, orderByChild, equalTo, get, child, set, update, limitToLast, push } from '@angular/fire/database';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PhraseClass } from '../_models/PhraseClass';
@@ -84,7 +84,10 @@ export class DatabaseService {
   // Metodo per aggiornare una frase
   update(key: number, updatedQuote: any): Promise<void> {
     const quoteRef = ref(this.db.database, `phrases/${key}`);
-    return set(quoteRef, updatedQuote) // Usa set() per sovrascrivere i dati del record
+    if ('key' in updatedQuote) {
+      delete updatedQuote.key;
+    }
+    return update(quoteRef, updatedQuote)
     .then(() => {
       console.log('Quote aggiornata con successo');
     })
@@ -99,7 +102,8 @@ export class DatabaseService {
     ).snapshotChanges().pipe(
       map(changes =>
         changes.map(c => ({ key: c.payload.key, ...(c.payload.val() as {}) }))
-      )
+      ),
+      map(data => data.reverse())
     );
   }
 

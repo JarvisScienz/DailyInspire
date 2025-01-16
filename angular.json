@@ -40,7 +40,7 @@
             "scripts": [],
             "extractLicenses": false,
             "sourceMap": true,
-            "optimization": false,
+            "optimization": true,
             "namedChunks": true,
             "browser": "src/main.ts"
           },
@@ -69,9 +69,22 @@
                   "maximumError": "4kb"
                 }
               ]
+            },
+            "development": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.ts"
+                }
+              ],
+              "optimization": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "aot": false,
+              "extractLicenses": false
             }
           },
-          "defaultConfiguration": ""
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -81,6 +94,9 @@
           "configurations": {
             "production": {
               "buildTarget": "daily-inspire:build:production"
+            },
+            "development": {
+              "buildTarget": "daily-inspire:build:development"
             }
           }
         },

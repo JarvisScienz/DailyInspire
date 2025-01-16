@@ -3,6 +3,7 @@ import { Injector } from '@angular/core';
 
 import { DateService } from '../_services/date.service';
 import { DatabaseService } from '../_services/database.service';
+import { take } from 'rxjs';
 
 @Component({
 	selector: 'app-daily-phrase',
@@ -45,12 +46,12 @@ export class DailyPhraseComponent implements OnInit {
 
 	loadPhrases() {
 		const dbService = this.injector.get(DatabaseService);
-		dbService.getPhrasesPublicatedInDay(this.dateService.getCurrentDateNotParsed()).subscribe(data => {
+		dbService.getPhrasesPublicatedInDay(this.dateService.getCurrentDateNotParsed()).pipe(take(1)).subscribe(data => {
 			if (data.length != 0){
 				this.quote = data[0].quote;
 				this.author = data[0].author;	
 			}else{
-				dbService.getAllPhrasesNotPublicated().subscribe(data => {
+				dbService.getAllPhrasesNotPublicated().pipe(take(1)).subscribe(data => {
 					this.phrases = data;
 					this.selectDailyPhrase(this.numberFromDate);
 				});	
@@ -64,13 +65,13 @@ export class DailyPhraseComponent implements OnInit {
 		const dbService = this.injector.get(DatabaseService);
 		var dateToUpdate = this.phrases[randomIndex];
 		dateToUpdate.datePublication = this.dateService.getCurrentDateNotParsed();
-		dbService.update(randomIndex, dateToUpdate);
+		dbService.update(dateToUpdate.key, dateToUpdate);
 	}
 
 	selectDailyPhrase(numberFromDate: number) {
 		const randomIndex = numberFromDate % this.phrases.length;
 		this.quote = this.phrases[randomIndex].quote;
 		this.author = this.phrases[randomIndex].author;
-		//this.updateDateProduction(randomIndex);
+		this.updateDateProduction(randomIndex);
 	}
 }
