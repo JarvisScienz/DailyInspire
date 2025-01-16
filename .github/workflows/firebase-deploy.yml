@@ -73,7 +73,7 @@ jobs:
         firebase deploy --only hosting --project dailyinspire-41b75
     
     - name: Salva environment.prod.ts come artefatto
-      uses: actions/upload-artifact@v3.1.0
+      uses: actions/upload-artifact@v4
       with:
         name: environment-prod
         path: src/environments/environment.prod.ts
