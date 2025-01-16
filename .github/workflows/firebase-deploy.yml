@@ -33,7 +33,10 @@ jobs:
             echo "    messagingSenderId: '${{ secrets.MESSAGINGSENDERID }}'," >> src/environments/environment.ts
             echo "    appId: '${{ secrets.APPID }}'," >> src/environments/environment.ts
             echo "    measurementId: '${{ secrets.MEASUREMENTID }}'," >> src/environments/environment.ts
-            echo "  }" >> src/environments/environment.ts
+            echo "  }," >> src/environments/environment.ts
+            echo " emailJS_ServiceID: '${{ secrets.EMAILJS_SERVICE_ID }}'," >> src/environments/environment.ts
+            echo " emailJS_TemplateID: '${{ secrets.EMAILJS_TEMPLATE_ID }}'," >> src/environments/environment.ts
+            echo " emailJS_UserID: '${{ secrets.EMAILJS_USER_ID }}'" >> src/environments/environment.ts
             echo "};" >> src/environments/environment.ts
 
     - name: Generate environment.prod.ts
@@ -50,7 +53,10 @@ jobs:
           echo "    messagingSenderId: '${{ secrets.MESSAGINGSENDERID }}'," >> src/environments/environment.prod.ts
           echo "    appId: '${{ secrets.APPID }}'," >> src/environments/environment.prod.ts
           echo "    measurementId: '${{ secrets.MEASUREMENTID }}'," >> src/environments/environment.prod.ts
-          echo "  }" >> src/environments/environment.prod.ts
+          echo "  }," >> src/environments/environment.prod.ts
+          echo " emailJS_ServiceID: '${{ secrets.EMAILJS_SERVICE_ID }}'," >> src/environments/environment.prod.ts
+          echo " emailJS_TemplateID: '${{ secrets.EMAILJS_TEMPLATE_ID }}'," >> src/environments/environment.prod.ts
+          echo " emailJS_UserID: '${{ secrets.EMAILJS_USER_ID }}'" >> src/environments/environment.prod.ts
           echo "};" >> src/environments/environment.prod.ts
 
     - name: Install dependencies
