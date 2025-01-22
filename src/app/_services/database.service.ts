@@ -96,16 +96,27 @@ export class DatabaseService {
     });
   }
 
-  getLastNPhrases(index: number): Observable<any> {
-    return this.db.list(this.databasePath, ref =>
-      ref.orderByChild('datePublication').limitToLast(index) // Ordina per datePublication e prendi gli ultimi 5
-    ).snapshotChanges().pipe(
+  getLastNPhrases(index: number, lastDate?: string): Observable<any> {
+    return this.db.list(this.databasePath, ref => {
+      let query = ref.orderByChild('datePublication').limitToLast(index);
+      if (lastDate) {
+        query = query.endBefore(lastDate); // Carica i dati precedenti rispetto a "lastDate"
+      }
+      return query;
+    }).snapshotChanges().pipe(
       map(changes =>
-        changes.map(c => ({ key: c.payload.key, ...(c.payload.val() as {}) }))
+        changes
+          .map(c => {
+            // Converte il valore Firebase in un oggetto con una chiave e i dati associati
+            const data = c.payload.val() as any; // Utilizziamo "as any" per accedere in modo dinamico
+            return { key: c.payload.key, ...data };
+          })
+          .filter(item => item.datePublication !== undefined) // Filtro per escludere nodi senza "datePublication"
       ),
-      map(data => data.reverse())
+      map(data => data.reverse()) // Reverse per mantenere l'ordine cronologico
     );
   }
+  
 
   // Metodo per controllare il ruolo di un utente
   checkUserRole(userUID: string): Promise<string | null> {

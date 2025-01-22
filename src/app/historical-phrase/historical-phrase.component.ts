@@ -10,6 +10,7 @@ import { DatabaseService } from '../_services/database.service';
 	styleUrls: ['./historical-phrase.component.css']
 })
 export class HistoricalPhraseComponent implements OnInit {
+	index: number = 5;
 	isCollapsed = true;
 	phrases: any = [];
 	quote: string = '';
@@ -25,6 +26,7 @@ export class HistoricalPhraseComponent implements OnInit {
 	disabledPrevButton: boolean = true;
 	disabledNextButton: boolean = false;
 	dbService: DatabaseService;
+	lastDate?: string;
 
 	constructor(private dateService: DateService,
 		private injector: Injector) {
@@ -34,7 +36,7 @@ export class HistoricalPhraseComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.loadHistoricalPhrases();
+		this.loadHistoricalPhrases(this.todayDate);
 		var body = document.getElementsByTagName("body")[0];
 		body.classList.add("index-page");
 	}
@@ -43,13 +45,30 @@ export class HistoricalPhraseComponent implements OnInit {
 		element.scrollIntoView({ behavior: "smooth" });
 	}
 
-	loadHistoricalPhrases() {
+	loadHistoricalPhrases(todayDate: string) {
 		
-		this.dbService.getLastNPhrases(5).subscribe((data: any) => {
+		this.dbService.getLastNPhrases(this.index, todayDate).subscribe((data: any) => {
 			this.phrases = data;
 			this.selectDailyPhrase();
 		});
 	}
+
+	loadMore(lastDate: string) {
+		// if (this.loading) return; // Evita chiamate multiple contemporanee
+		// this.loading = true;
+	
+		this.dbService.getLastNPhrases(this.index, lastDate).subscribe(data => {
+		  if (data.length > 0) {
+			this.lastDate = data[data.length - 1].datePublication; // Aggiorna l'ultima data
+			this.phrases = [...this.phrases, ...data]; // Aggiungi le nuove frasi a quelle esistenti
+			this.disabledNextButton = false;
+		  }
+		//   this.loading = false; // Fine caricamento
+		}, error => {
+		  console.error('Errore durante il caricamento delle frasi:', error);
+		//   this.loading = false;
+		});
+	  }
 
 	// testUpdate() {
 	// 	const dbService = this.injector.get(DatabaseService);
@@ -75,6 +94,9 @@ export class HistoricalPhraseComponent implements OnInit {
 		this.currentIndex = (this.currentIndex < this.phrases.length) ? this.currentIndex+1 : this.phrases.length-1;
 		this.disabledPrevButton = false;
 		this.disabledNextButton = (this.currentIndex == this.phrases.length-1) ? true : false;
+		if (this.disabledNextButton){
+			this.loadMore(this.phrases[this.phrases.length-1].datePublication);
+		}
 		this.selectDailyPhrase();
 	}
 
