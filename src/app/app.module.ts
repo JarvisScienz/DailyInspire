@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA, isDevMode } from '@angular/core';
 import { ReactiveFormsModule, FormsModule , } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -9,6 +9,7 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { BsDropdownModule } from "ngx-bootstrap/dropdown";
 import { CollapseModule } from "ngx-bootstrap/collapse";
@@ -70,7 +71,13 @@ export function HttpLoaderFactory(http: HttpClient) {
 		  useFactory: HttpLoaderFactory,
 		  deps: [HttpClient]
 		}
-	})
+	}),
+ ServiceWorkerModule.register('ngsw-worker.js', {
+   enabled: !isDevMode(),
+   // Register the ServiceWorker as soon as the application is stable
+   // or after 30 seconds (whichever comes first).
+   registrationStrategy: 'registerWhenStable:30000'
+ })
   ],
   providers: [
 	provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
